@@ -13,6 +13,8 @@ from Crypto.Hash import SHA256
 from Crypto.Signature import pkcs1_15
 from operator import itemgetter
 from urllib.parse import urlencode
+from yarl import URL
+
 
 from .helpers import interval_to_milliseconds, convert_ts_str, get_loop
 from .exceptions import BinanceAPIException, BinanceRequestException, NotImplementedException
@@ -8198,7 +8200,7 @@ class AsyncClient(BaseClient):
 
         kwargs = self._get_request_kwargs(method, signed, force_params, **kwargs)
 
-        async with getattr(self.session, method)(uri, **kwargs) as response:
+        async with getattr(self.session, method)(URL(uri,encoded=True), **kwargs) as response:
             self.response = response
             return await self._handle_response(response)
 
